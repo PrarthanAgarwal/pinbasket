@@ -20,10 +20,29 @@ PinBasket is a powerful, high-performance Pinterest image scraper that helps you
 ## 📋 Prerequisites
 
 - Python 3.8+
-- Virtual Environment (recommended)
 - Windows, macOS, or Linux
 
 ## 🔧 Installation
+
+### Windows (Easy Setup)
+
+1. **Clone this repository or download the files**
+
+2. **Run the setup script**
+   ```
+   Double-click on setup_venv.bat
+   ```
+   This script will:
+   - Create a virtual environment
+   - Install all required dependencies
+   - Set up Playwright browsers
+   
+3. **Set up credentials (optional)**
+   ```
+   Double-click on setup_credentials.bat
+   ```
+
+### Manual Setup
 
 1. **Clone this repository or download the files**
 
@@ -67,7 +86,11 @@ The easiest way to run PinBasket is to use the included batch file:
 4. Set the scroll count for loading more images (default: 5)
 5. Sit back and watch PinBasket do its magic!
 
+> **Note:** The batch file will automatically activate the virtual environment, so you don't need to worry about activating it manually.
+
 ### ⌨️ Command Line Usage
+
+If you prefer to use the command line directly (make sure your virtual environment is activated):
 
 #### Scraping from a Search Query
 

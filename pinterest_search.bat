@@ -3,6 +3,17 @@ echo PinBasket - Pinterest Image Collection Tool
 echo ===========================================
 echo.
 
+rem Activate virtual environment
+cd /d %~dp0
+if exist venv\Scripts\activate.bat (
+    echo Activating virtual environment...
+    call venv\Scripts\activate.bat
+) else (
+    echo WARNING: Virtual environment not found at venv\Scripts\activate.bat
+    echo You may need to install dependencies manually or create the venv first.
+    echo.
+)
+
 rem Get search query from user
 set /p QUERY="Enter search query: "
 
@@ -53,6 +64,11 @@ if not "%PINTEREST_EMAIL%"=="" (
 
 rem Run the command
 %CMD%
+
+rem Deactivate virtual environment if it was activated
+if exist venv\Scripts\activate.bat (
+    call deactivate
+)
 
 echo.
 echo Done! Press any key to exit...

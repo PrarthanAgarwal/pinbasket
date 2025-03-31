@@ -2,6 +2,17 @@
 echo PinBasket - Credentials Setup
 echo =============================================
 echo.
+
+rem Activate virtual environment
+cd /d %~dp0
+if exist venv\Scripts\activate.bat (
+    echo Activating virtual environment...
+    call venv\Scripts\activate.bat
+) else (
+    echo WARNING: Virtual environment not found at venv\Scripts\activate.bat
+    echo.
+)
+
 echo This script will help you set up your Pinterest credentials as environment variables.
 echo Your credentials will be stored securely and won't be included in the repository.
 echo.
@@ -21,6 +32,11 @@ echo echo Done! >> set_pinterest_env.bat
 
 :: Run the created batch file to set environment variables
 call set_pinterest_env.bat
+
+rem Deactivate virtual environment if it was activated
+if exist venv\Scripts\activate.bat (
+    call deactivate
+)
 
 echo.
 echo Credentials have been set up!
