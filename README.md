@@ -1,4 +1,4 @@
-# 🖼️ PinBasket: Your Pinterest Image Scraping Sidekick! 🖼️
+# 🖼️ PinBasket: Your Pinterest Image Scraping Sidekick!
 
 > *"Because manually saving Pinterest images is so 2010..."*
 

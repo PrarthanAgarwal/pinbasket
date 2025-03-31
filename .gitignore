@@ -50,7 +50,6 @@ pinterest_search_best_ads/
 
 # Credentials
 set_pinterest_env.bat
-*credentials*.bat
 *credentials*.txt
 *credentials*.json
 .env
