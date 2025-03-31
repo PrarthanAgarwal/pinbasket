@@ -167,32 +167,6 @@ This project includes three Python scripts for different use cases:
 - **pinterest_scraper.py**: A simpler version for scraping from search results 
 - **pinterest_board_scraper.py**: A specialized version for scraping only from boards
 
-## 🛑 Important Notes
-
-1. **Respect Pinterest's Terms of Service** and use this tool responsibly
-2. **Don't overload Pinterest's servers** with too many requests
-3. **Images may be subject to copyright** - respect intellectual property
-4. **The tool may break** if Pinterest changes its layout/structure
-
-## 💻 Examples
-
-### Finding Inspiration for Your Next Design Project
-
-```bash
-python pinterest_img_scraper.py --query "modern logo design inspiration" --limit 30 --min-width 1000 --min-height 1000
-```
-
-### Collecting Training Data for AI Art Models
-
-```bash
-python pinterest_img_scraper.py --query "cyberpunk art" --limit 100 --scroll 10 --output "ai_training_data"
-```
-
-### Creating a Mood Board
-
-```bash
-python pinterest_img_scraper.py --board "https://www.pinterest.com/username/summer-fashion/" --visible
-```
 
 ## 🤔 Troubleshooting
 

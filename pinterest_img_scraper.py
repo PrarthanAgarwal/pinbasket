@@ -113,6 +113,10 @@ class PinterestImageScraper:
                 if self.email and self.password:
                     print(f"Logging in to Pinterest as {self.email}...")
                     login_success = await self._login(page)
+                    if login_success:
+                        print("Successfully logged in to Pinterest. Continuing with authenticated session.")
+                    else:
+                        print("Note: Will continue scraping without authentication. Some content may be limited.")
                 
                 # Even if login fails, continue with the scraping
                 if self.is_board:
@@ -232,6 +236,33 @@ class PinterestImageScraper:
             # Go to the login page
             await page.goto('https://pinterest.com/login/', timeout=self.timeout)
             
+            # Check if we have a "Continue as [user]" option, which appears for returning users
+            try:
+                continue_selectors = [
+                    'button:has-text("Continue as ")',
+                    'button[aria-label*="Continue as"]',
+                    'div.ContinueCard button'
+                ]
+                
+                for selector in continue_selectors:
+                    try:
+                        continue_button = await page.wait_for_selector(selector, timeout=3000)
+                        if continue_button:
+                            print("Found 'Continue as' option, clicking it...")
+                            await continue_button.click()
+                            await page.wait_for_load_state("networkidle", timeout=10000)
+                            
+                            # Check if we're logged in already
+                            current_url = page.url
+                            if "/login/" not in current_url:
+                                print("Successfully continued with existing session!")
+                                return True
+                            break
+                    except PlaywrightTimeoutError:
+                        continue
+            except Exception as e:
+                print(f"Error checking for 'Continue as' option: {e}. Proceeding with normal login.")
+            
             # Check if we're already on the login form
             try:
                 # Wait for the email input field
@@ -283,29 +314,61 @@ class PinterestImageScraper:
                     except PlaywrightTimeoutError:
                         continue
                 
+                # Add a more robust waiting period after clicking login
+                print("Waiting for login process to complete...")
+                try:
+                    # Wait for URL to change, indicating navigation after login
+                    await page.wait_for_url(lambda url: "/login/" not in url, timeout=10000)
+                except PlaywrightTimeoutError:
+                    print("Login page URL didn't change, but continuing to check login status...")
+                
+                # Allow additional time for the page to stabilize after login
+                await page.wait_for_timeout(3000)
+                
                 # Check if login was successful - look for profile button
                 try:
                     profile_selectors = [
                         'div[data-test-id="header-profile-button"]',
                         'div[aria-label*="Account"]',
-                        'div.HeaderProfileButton'
+                        'div.HeaderProfileButton',
+                        # Add more selectors that might indicate successful login
+                        'button[aria-label*="Profile"]',
+                        'div[data-test-id="header-menu"]',
+                        'div[aria-label*="Notifications"]',
+                        'div[aria-label*="Messages"]',
+                        'div.HeaderButton',  # Generic Pinterest header buttons
+                        'img[data-test-id="user-avatar"]',
+                        'button[data-test-id="button"]'  # Generic Pinterest button
                     ]
                     
+                    # Increase the timeout to give Pinterest more time to load profile elements
+                    login_success = False
                     for selector in profile_selectors:
                         try:
-                            await page.wait_for_selector(selector, timeout=3000)
+                            await page.wait_for_selector(selector, timeout=5000)  # Increase timeout from 3000 to 5000
                             print("Login successful!")
-                            return True
+                            login_success = True
+                            break
                         except PlaywrightTimeoutError:
                             continue
                     
-                    print("Login might have failed or encountered an issue. Continuing anyway.")
+                    # If none of the profile selectors are found, check for URL changes
+                    if not login_success:
+                        current_url = page.url
+                        if "/feed/" in current_url or "/home/" in current_url:
+                            print("Login appears successful based on URL redirect!")
+                            login_success = True
                     
-                    # Take screenshot for debugging
-                    login_screenshot_path = os.path.join(self.output_dir, "login_debug.png")
-                    await page.screenshot(path=login_screenshot_path)
-                    print(f"Login debug screenshot saved to {login_screenshot_path}")
+                    if not login_success:
+                        print("Login might have failed or encountered an issue. Continuing anyway.")
+                        
+                        # Take screenshot for debugging
+                        login_screenshot_path = os.path.join(self.output_dir, "login_debug.png")
+                        await page.screenshot(path=login_screenshot_path)
+                        print(f"Login debug screenshot saved to {login_screenshot_path}")
                     
+                    return login_success
+                
                 except PlaywrightTimeoutError:
                     print("Couldn't verify login. Continuing anyway.")
             
