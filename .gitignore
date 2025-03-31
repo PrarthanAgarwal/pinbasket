@@ -1,0 +1,69 @@
+# Python related
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+.env/
+.venv/
+env/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Project specific - scraped images and output directories
+*.jpg
+*.jpeg
+*.png
+*.gif
+pinterest_images/
+pinterest_board_images/
+pinterest_search_*/
+pinterest_board_*/
+pinterest_search_ads/
+pinterest_search_best_ads/
+
+# Credentials
+set_pinterest_env.bat
+*credentials*.bat
+*credentials*.txt
+*credentials*.json
+.env
+
+# Playwright
+.playwright-cache/
+
+# Logs and debug files
+*.log
+debug_screenshot.png
+logs/
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
