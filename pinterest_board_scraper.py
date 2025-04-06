@@ -217,9 +217,8 @@ class PinterestBoardScraper:
                 
                 image_data = await response.body()
                 
-                # Generate a filename
-                timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-                filename = f"{self.board_name}_{timestamp}_{index:03d}.jpg"
+                # Generate a simplified filename
+                filename = f"{self.board_name}_{index+1}.jpg"
                 filepath = os.path.join(self.output_dir, filename)
                 
                 # Save the image

@@ -888,9 +888,8 @@ class PinterestImageScraper:
     async def _download_image(self, url, index):
         """Download a single image"""
         try:
-            # Generate a filename first
-            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            filename = f"{self.name}_{timestamp}_{index:03d}.jpg"
+            # Generate a simplified filename
+            filename = f"{self.name}_{index+1}.jpg"
             filepath = os.path.join(self.output_dir, filename)
             
             # Try to download using a simpler direct request first
